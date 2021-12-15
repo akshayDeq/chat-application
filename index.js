@@ -1,3 +1,6 @@
+// require dotenv for accessing secured variables ${dbPassword}
+require('dotenv').config();
+
 // establish connection to database
 require('./database/mongoConnection');
 
