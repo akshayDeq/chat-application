@@ -6,17 +6,17 @@ const messageSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  date:{
-    type: String,
-    default: Date.now,
+  time:{
+      type:String,
+      default:Date.now()
   },
-  userInfo:{
+  userInfo:{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'user'
+    ref: 'user' 
   },
-  roomInfo:{
+  roomInfo:{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'room'
+    ref: 'room' 
   }
 })
 

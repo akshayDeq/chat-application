@@ -6,7 +6,11 @@ const roomSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  members:[{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }]
+  members:[{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+  admin:{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'user' 
+  }
 })
 
 const Room = mongoose.model("room", roomSchema);

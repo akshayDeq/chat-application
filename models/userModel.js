@@ -22,8 +22,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     min: 10
   },
-  memberOf: [{ type: mongoose.Schema.Types.ObjectId, ref: 'room' }],
-  
+  memberOf:[{ type: mongoose.Schema.Types.ObjectId, ref: 'room' }],
 })
 
 const User = mongoose.model("user", userSchema);
