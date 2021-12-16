@@ -1,4 +1,4 @@
-
+// getting the password from environment variables
 const dbPassword = process.env.DB_PASSWORD;
 
 const mongoose = require('mongoose')
