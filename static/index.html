@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <ul id="messages"></ul> 
+    <div class="container h-100 w-100">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <label for="">username</label>
+                <input type="text" id="username" />
+            </div>
+            <div class="col-12">
+                <label for="">room</label>
+                <input type="text" id="room" />
+            </div>
+            <div class="col-12">
+                <label for="">Chat</label>
+                <input type="text" id="chat" />
+            </div>
+            <div class="col-8">
+                <button id="send">Send</button>
+                <button id="sendchat">chat</button>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>  
+        let socket = io();
+        let submit = document.getElementById("send");
+        let sendChat = document.getElementById("sendchat");
+
+        submit.addEventListener("click" , function(){
+                console.log('Clicked');
+                let username = document.getElementById("username").value;
+                let roomname = document.getElementById("room").value;
+                socket.emit("room",{username,roomname});
+            })    
+        
+            sendChat.addEventListener("click" , function(){
+                console.log('sent');
+                let message = document.getElementById("chat").value;
+                let roomname = document.getElementById("room").value;
+                socket.emit("chat message",message , roomname);
+            }) 
+
+    </script>
+</body>
+</html>
