@@ -18,6 +18,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "eslint": "^8.5.0",
     "node-env-run": "^4.0.2"
   }
 }

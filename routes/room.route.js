@@ -1,7 +1,7 @@
 
 const express = require("express");
 const roomRouter = express.Router();
-const Room = require('../models/RoomModels');
+const Room = require('../database/models/room.model');
 
 // get all available rooms present in the database
 roomRouter.get('/rooms' , async (req,res)=>{
@@ -32,7 +32,4 @@ roomRouter.get('/rooms/:id' , async (req,res)=>{
     }
 })
 
-roomRouter.post('joinroom' , (req , res)=>{
-    
-})
 module.exports = roomRouter;
