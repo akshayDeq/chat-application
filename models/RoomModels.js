@@ -4,14 +4,14 @@ const roomSchema = new mongoose.Schema({
   roomname: {
     type: String,
     required: true,
-    unique: [true, "Room already exists"],
+    unique: true,
     minlength: 3,
   },
   connectedusers:[{
       _id:{
           type:String,
           required:true,
-          unique:[true , "ID already exists"]
+          unique:true
       },
       username:{
           type:String,
@@ -26,23 +26,21 @@ const roomSchema = new mongoose.Schema({
   }],
   messages:[
       {
-          _id:{
+        _id:{
             type:String,
             unique:[true , "ID already exists"],
             default:null
         },
-          content:{
+        content:{
             type:String,
         },
-          userid:{
-              _id:{
-                  type:String
-              }
-          },
-          time:{
-              type:String,
-              default:Date.now()
-          }
+        userid:{
+            type:String
+        },
+        time:{
+            type:String,
+            default:Date.now()
+        }
       }
   ]
 })

@@ -27,31 +27,59 @@
                 <input type="text" id="chat" />
             </div>
             <div class="col-8">
-                <button id="send">Send</button>
-                <button id="sendchat">chat</button>
+                <button id="joinRoom">Join room</button>
+                <button id="sendChat">send message</button>
+                <button id="leaveRoom">leave room</button>
             </div>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script>  
+    <script>
         let socket = io();
-        let submit = document.getElementById("send");
-        let sendChat = document.getElementById("sendchat");
+        let joinRoom = document.getElementById("joinRoom");
+        let sendChat = document.getElementById("sendChat");
+        let leaveRoom = document.getElementById("leaveRoom");
 
-        submit.addEventListener("click" , function(){
-                console.log('Clicked');
+        // Event for Joining a room 
+        joinRoom.addEventListener("click" , function(){
                 let username = document.getElementById("username").value;
                 let roomname = document.getElementById("room").value;
+                let joinRoom = document.getElementById("joinRoom").disabled = true;
                 socket.emit("room",{username,roomname});
             })    
         
-            sendChat.addEventListener("click" , function(){
-                console.log('sent');
+        // Event for sending a message
+        sendChat.addEventListener("click" , function(){
                 let message = document.getElementById("chat").value;
                 let roomname = document.getElementById("room").value;
-                socket.emit("chat message",message , roomname);
+                let username = document.getElementById("username").value;
+                var ul = document.getElementById("messages").innerHTML+='<li>'+`${message}`+'</li>';
+                socket.emit("chat message", {message , username , roomname});
             }) 
 
+        
+        socket.on("msgdata" , ({message , username})=>{
+                var ul = document.getElementById("messages").innerHTML+='<li>'+`${username} => ${message}`+'</li>';
+            })
+        
+        // Event for leaving the room
+        leaveRoom.addEventListener("click" , function(){
+                let username = document.getElementById("username").value;
+                let roomname = document.getElementById("room").value;
+
+                // A prompt message will be displayed confirming to leave the room
+                let choice = prompt('Enter Y if you want to leave the room?');
+
+                if(choice.toLowerCase() == 'y'){
+                    socket.emit("leave room",{username,roomname});
+                    // clear all the input fields & messages if user leaves the room
+                    document.getElementById("username").value="";
+                    document.getElementById("room").value="";
+                    document.getElementById("chat").value="";
+                    var ul = document.getElementById("messages").innerHTML="";
+                    let joinRoom = document.getElementById("joinRoom").disabled = false;
+                }
+            }) 
     </script>
 </body>
 </html>
