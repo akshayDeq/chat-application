@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
     "node-env-run": "^4.0.2"
   }
 }

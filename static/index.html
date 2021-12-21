@@ -1,85 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat Application</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-
-    <ul id="messages"></ul> 
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
     <div class="container h-100 w-100">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <label for="">username</label>
-                <input type="text" id="username" />
-            </div>
-            <div class="col-12">
-                <label for="">room</label>
-                <input type="text" id="room" />
-            </div>
-            <div class="col-12">
-                <label for="">Chat</label>
-                <input type="text" id="chat" />
-            </div>
-            <div class="col-8">
-                <button id="joinRoom">Join room</button>
-                <button id="sendChat">send message</button>
-                <button id="leaveRoom">leave room</button>
-            </div>
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <label for="">username</label>
+          <input type="text" id="username" />
         </div>
+        <div class="col-12">
+          <label for="">room</label>
+          <input type="text" id="room" />
+        </div>
+        <div class="col-12">
+          <label for="">Chat</label>
+          <input type="text" id="chat" />
+        </div>
+        <div class="col-8">
+          <button id="joinRoom">Join room</button>
+          <button id="sendChat">send message</button>
+          <button id="leaveRoom">leave room</button>
+        </div>
+      </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        let socket = io();
-        let joinRoom = document.getElementById("joinRoom");
-        let sendChat = document.getElementById("sendChat");
-        let leaveRoom = document.getElementById("leaveRoom");
+      let socket = io();
+      let joinRoom = document.getElementById("joinRoom");
+      let sendChat = document.getElementById("sendChat");
+      let leaveRoom = document.getElementById("leaveRoom");
 
-        // Event for Joining a room 
-        joinRoom.addEventListener("click" , function(){
-                let username = document.getElementById("username").value;
-                let roomname = document.getElementById("room").value;
-                let joinRoom = document.getElementById("joinRoom").disabled = true;
-                socket.emit("room",{username,roomname});
-            })    
-        
-        // Event for sending a message
-        sendChat.addEventListener("click" , function(){
-                let message = document.getElementById("chat").value;
-                let roomname = document.getElementById("room").value;
-                let username = document.getElementById("username").value;
-                var ul = document.getElementById("messages").innerHTML+='<li>'+`${message}`+'</li>';
-                socket.emit("chat message", {message , username , roomname});
-            }) 
+      // Event for Joining a room
+      joinRoom.addEventListener("click", function () {
+        let username = document.getElementById("username").value;
+        let roomname = document.getElementById("room").value;
+        let joinRoom = (document.getElementById("joinRoom").disabled = true);
+        socket.emit("room", { username, roomname });
+      });
 
-        
-        socket.on("msgdata" , ({message , username})=>{
-                var ul = document.getElementById("messages").innerHTML+='<li>'+`${username} => ${message}`+'</li>';
-            })
-        
-        // Event for leaving the room
-        leaveRoom.addEventListener("click" , function(){
-                let username = document.getElementById("username").value;
-                let roomname = document.getElementById("room").value;
+      // Event for sending a message
+      sendChat.addEventListener("click", function () {
+        let message = document.getElementById("chat").value;
+        let roomname = document.getElementById("room").value;
+        let username = document.getElementById("username").value;
+        var ul = (document.getElementById("messages").innerHTML +=
+          "<li>" + `${message}` + "</li>");
+        socket.emit("chat message", { message, username, roomname });
+      });
 
-                // A prompt message will be displayed confirming to leave the room
-                let choice = prompt('Enter Y if you want to leave the room?');
+      socket.on("msgdata", ({ message, username }) => {
+        var ul = (document.getElementById("messages").innerHTML +=
+          "<li>" + `${username} => ${message}` + "</li>");
+      });
 
-                if(choice.toLowerCase() == 'y'){
-                    socket.emit("leave room",{username,roomname});
-                    // clear all the input fields & messages if user leaves the room
-                    document.getElementById("username").value="";
-                    document.getElementById("room").value="";
-                    document.getElementById("chat").value="";
-                    var ul = document.getElementById("messages").innerHTML="";
-                    let joinRoom = document.getElementById("joinRoom").disabled = false;
-                }
-            }) 
+      // Event for leaving the room
+      leaveRoom.addEventListener("click", function () {
+        let username = document.getElementById("username").value;
+        let roomname = document.getElementById("room").value;
+
+        // A prompt message will be displayed confirming to leave the room
+        let choice = prompt("Enter Y if you want to leave the room?");
+
+        if (choice.toLowerCase() == "y") {
+          socket.emit("leave room", { username, roomname });
+          // clear all the input fields & messages if user leaves the room
+          document.getElementById("username").value = "";
+          document.getElementById("room").value = "";
+          document.getElementById("chat").value = "";
+          var ul = (document.getElementById("messages").innerHTML = "");
+          let joinRoom = (document.getElementById("joinRoom").disabled = false);
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
