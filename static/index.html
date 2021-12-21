@@ -37,7 +37,7 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      let socket = io();
+      const socket = io();
       let joinRoom = document.getElementById("joinRoom");
       let sendChat = document.getElementById("sendChat");
       let leaveRoom = document.getElementById("leaveRoom");
@@ -46,7 +46,7 @@
       joinRoom.addEventListener("click", function () {
         let username = document.getElementById("username").value;
         let roomname = document.getElementById("room").value;
-        let joinRoom = (document.getElementById("joinRoom").disabled = true);
+        document.getElementById("joinRoom").disabled = true;
         socket.emit("room", { username, roomname });
       });
 
@@ -55,13 +55,13 @@
         let message = document.getElementById("chat").value;
         let roomname = document.getElementById("room").value;
         let username = document.getElementById("username").value;
-        var ul = (document.getElementById("messages").innerHTML +=
+        let ul = (document.getElementById("messages").innerHTML +=
           "<li>" + `${message}` + "</li>");
         socket.emit("chat message", { message, username, roomname });
       });
 
       socket.on("msgdata", ({ message, username }) => {
-        var ul = (document.getElementById("messages").innerHTML +=
+        let ul = (document.getElementById("messages").innerHTML +=
           "<li>" + `${username} => ${message}` + "</li>");
       });
 
@@ -79,8 +79,8 @@
           document.getElementById("username").value = "";
           document.getElementById("room").value = "";
           document.getElementById("chat").value = "";
-          var ul = (document.getElementById("messages").innerHTML = "");
-          let joinRoom = (document.getElementById("joinRoom").disabled = false);
+          document.getElementById("joinRoom").disabled = false;
+          let ul = (document.getElementById("messages").innerHTML = "");
         }
       });
     </script>
